@@ -1,4 +1,4 @@
-# <img src="public/gold_certificate.png" width="32" height="32" alt="" style="vertical-align: middle;"> 证书制作器 (CertMaster)
+# <img src="public/gold_certificate.png" width="40" height="40" alt="" style="vertical-align: middle;"> 证书制作器 (CertMaster)
 
 一个基于 Web 的专业证书制作系统，支持自定义模板、字段配置、实时预览和批量生成。
 
