@@ -1,24 +1,31 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.py[cod]
+
+# Build
+dist/
+build/
+*.egg-info/
+
+# Environment
+.env
+.env.local
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Data (可选：如果不想提交数据)
+# data/certificates/
+# data/configs/
+
 # Logs
-logs
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# OS
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+Thumbs.db

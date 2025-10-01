@@ -1,0 +1,68 @@
+{
+  "name": {
+    "x": 377,
+    "y": 661,
+    "fontSize": 48,
+    "fontFamily": "SimSun, serif",
+    "fontWeight": "normal",
+    "color": "#000000",
+    "align": "left"
+  },
+  "content": {
+    "x": 262,
+    "y": 770,
+    "fontSize": 40,
+    "fontFamily": "SimSun, serif",
+    "fontWeight": "normal",
+    "color": "#000000",
+    "align": "left"
+  },
+  "guidanceUnit": {
+    "x": 454,
+    "y": 995,
+    "fontSize": 40,
+    "fontFamily": "SimSun, serif",
+    "fontWeight": "normal",
+    "color": "#000000",
+    "align": "left"
+  },
+  "certNumber": {
+    "x": 461,
+    "y": 1076,
+    "fontSize": 40,
+    "fontFamily": "SimSun, serif",
+    "fontWeight": "normal",
+    "color": "#000000",
+    "align": "left"
+  },
+  "authTime": {
+    "x": 1215,
+    "y": 995,
+    "fontSize": 40,
+    "fontFamily": "SimSun, serif",
+    "fontWeight": "normal",
+    "color": "#000000",
+    "align": "left"
+  },
+  "authUnit": {
+    "x": 1215,
+    "y": 1080,
+    "fontSize": 40,
+    "fontFamily": "SimSun, serif",
+    "fontWeight": "normal",
+    "color": "#000000",
+    "align": "left"
+  },
+  "stamp": {
+    "x": 1477,
+    "y": 1032,
+    "width": 250,
+    "height": 250,
+    "rotation": 5.4081038526071055
+  },
+  "defaultContent": {
+    "name": "",
+    "authUnit": "东南大学海洋研究院",
+    "guidanceUnit": "南通市如皋市白蒲中学"
+  }
+}
