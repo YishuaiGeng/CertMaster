@@ -5,7 +5,7 @@ const numberToChinese = (num: number): string => {
 };
 
 // 将日期转换为中文大写格式
-export const dateToChinese = (dateStr: string): string => {
+export const dateToChinese = (dateStr: string, showDay: boolean = false): string => {
   if (!dateStr) return '';
   
   const date = new Date(dateStr);
@@ -16,12 +16,16 @@ export const dateToChinese = (dateStr: string): string => {
   const yearChinese = numberToChinese(year);
   const monthChinese = month < 10 ? numberToChinese(month) : 
     (month === 10 ? '十' : '十' + numberToChinese(month % 10));
-  const dayChinese = day < 10 ? numberToChinese(day) : 
-    (day === 10 ? '十' : 
-    (day < 20 ? '十' + numberToChinese(day % 10) : 
-    (day === 20 ? '二十' : 
-    (day === 30 ? '三十' : 
-    (day < 30 ? '二十' + numberToChinese(day % 10) : '三十' + numberToChinese(day % 10))))));
   
-  return `${yearChinese}年${monthChinese}月${dayChinese}日`;
+  if (showDay) {
+    const dayChinese = day < 10 ? numberToChinese(day) : 
+      (day === 10 ? '十' : 
+       day < 20 ? '十' + numberToChinese(day % 10) :
+       day === 20 ? '二十' :
+       day < 30 ? '二十' + numberToChinese(day % 10) :
+       day === 30 ? '三十' : '三十' + numberToChinese(day % 10));
+    return `${yearChinese}年${monthChinese}月${dayChinese}日`;
+  }
+  
+  return `${yearChinese}年${monthChinese}月`;
 };

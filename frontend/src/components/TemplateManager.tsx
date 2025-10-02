@@ -127,35 +127,25 @@ export const TemplateManager: React.FC<TemplateManagerProps> = ({ onClose, onUpd
     
     console.log('🔧 开始编辑模板:', template.name);
     
-    // 确保加载最新的配置
-    let templateWithConfig = template;
-    if (template.path) {
-      const configKey = `template_config_${template.id}`;
-      const savedConfig = localStorage.getItem(configKey);
-      if (savedConfig) {
-        const parsedConfig = JSON.parse(savedConfig);
-        templateWithConfig = {
-          ...template,
-          config: parsedConfig
-        };
-        console.log(`✅ 加载模板配置: ${template.name}`);
-        console.log('   完整配置:', parsedConfig);
-        
-        // 特别检查授权时间配置
-        if (parsedConfig.authTime) {
-          console.log('   ✨ 授权时间配置:', {
-            align: parsedConfig.authTime.align,
-            x: parsedConfig.authTime.x,
-            y: parsedConfig.authTime.y,
-            fontSize: parsedConfig.authTime.fontSize,
-          });
-        }
-      } else {
-        console.log(`ℹ️ 模板 ${template.name} 没有保存的配置，将使用默认值`);
+    // 直接使用模板中已加载的配置（已经从后端或 LocalStorage 加载）
+    if (template.config) {
+      console.log(`✅ 使用已加载的模板配置: ${template.name}`);
+      console.log('   完整配置:', template.config);
+      
+      // 特别检查授权时间配置
+      if (template.config.authTime) {
+        console.log('   ✨ 授权时间配置:', {
+          align: template.config.authTime.align,
+          x: template.config.authTime.x,
+          y: template.config.authTime.y,
+          fontSize: template.config.authTime.fontSize,
+        });
       }
+    } else {
+      console.log(`ℹ️ 模板 ${template.name} 没有配置，将使用默认值`);
     }
     
-    setEditingTemplate(templateWithConfig);
+    setEditingTemplate(template);
   };
 
   const handleSaveTemplate = async (updatedTemplate: Template) => {

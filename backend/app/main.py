@@ -116,17 +116,48 @@ class HealthResponse(BaseModel):
 
 # ==================== 工具函数 ====================
 
+def clean_name(name: str) -> str:
+    """清理姓名，提取真正的姓名部分"""
+    if not name:
+        return "unnamed"
+    
+    cleaned = name
+    
+    # 如果包含冒号，只保留冒号之前的内容
+    if '：' in cleaned:
+        cleaned = cleaned.split('：')[0]
+    elif ':' in cleaned:
+        cleaned = cleaned.split(':')[0]
+    
+    # 去掉常见的前缀
+    for prefix in ['亲爱的', '尊敬的', '敬爱的']:
+        if cleaned.startswith(prefix):
+            cleaned = cleaned[len(prefix):]
+    
+    # 去掉常见的后缀
+    for suffix in ['同学', '老师', '先生', '女士']:
+        if cleaned.endswith(suffix):
+            cleaned = cleaned[:-len(suffix)]
+    
+    # 去掉空格
+    cleaned = cleaned.strip()
+    
+    return cleaned if cleaned else "unnamed"
+
 def generate_filename(name: str, title: str) -> str:
     """生成证书文件名"""
     timestamp = datetime.now()
     date_str = timestamp.strftime("%Y-%m-%d")
     timestamp_ms = int(timestamp.timestamp() * 1000)
     
-    # 处理特殊字符
-    safe_name = "".join(c if c.isalnum() or c in "一二三四五六七八九十" else "_" for c in name)
-    safe_title = "".join(c if c.isalnum() or c in "一二三四五六七八九十" else "_" for c in title)
+    # 清理姓名
+    cleaned_name = clean_name(name)
     
-    return f"{safe_name}_{safe_title}_{date_str}_{timestamp_ms}.png"
+    # 处理特殊字符（保留中文）
+    safe_name = "".join(c if c.isalnum() or '\u4e00' <= c <= '\u9fff' else "_" for c in cleaned_name)
+    
+    # 文件名格式：证书_姓名_日期_时间戳.png
+    return f"证书_{safe_name}_{date_str}_{timestamp_ms}.png"
 
 def read_json_file(file_path: Path) -> List[Dict]:
     """读取 JSON 文件"""
@@ -257,17 +288,22 @@ async def get_configs():
         raise HTTPException(status_code=500, detail=f"获取配置失败: {str(e)}")
 
 @app.post("/api/v1/configs/{template_id}")
-async def save_config(template_id: str, config: TemplateConfig):
+async def save_config(template_id: str, config: Dict[str, Any]):
     """保存模板配置"""
     try:
         filename = f"template_config_{template_id}.json"
         filepath = CONFIGS_DIR / filename
         
+        # 直接保存原始字典，避免 Pydantic 模型的序列化问题
         with open(filepath, "w", encoding="utf-8") as f:
-            json.dump(config.dict(), f, ensure_ascii=False, indent=2)
+            json.dump(config, f, ensure_ascii=False, indent=2)
+        
+        print(f"✅ 配置已保存到文件: {filepath}")
+        print(f"   配置大小: {len(json.dumps(config))} 字节")
         
         return {"success": True, "message": f"配置已保存: {filename}"}
     except Exception as e:
+        print(f"❌ 保存配置失败: {str(e)}")
         raise HTTPException(status_code=500, detail=f"保存配置失败: {str(e)}")
 
 @app.get("/api/v1/configs/export")

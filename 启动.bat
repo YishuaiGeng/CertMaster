@@ -63,8 +63,5 @@ echo ========================================
 
 timeout /t 5 /nobreak
 
-echo 🌐 正在打开浏览器...
-start http://localhost:5173
-
 pause
 

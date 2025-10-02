@@ -12,7 +12,7 @@ export const CertificateEditor: React.FC<CertificateEditorProps> = ({
   data,
   onChange,
 }) => {
-  const handleChange = (field: keyof CertificateData, value: string) => {
+  const handleChange = (field: keyof CertificateData, value: string | boolean) => {
     onChange({ ...data, [field]: value });
   };
 
@@ -23,11 +23,11 @@ export const CertificateEditor: React.FC<CertificateEditorProps> = ({
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-    const certNumber = `CERT-${year}${month}${day}-${random}`;
+    const certNumber = `${year}${month}${day}${random}`;
     handleChange('certNumber', certNumber);
   };
 
-  const chineseDate = dateToChinese(data.authTime);
+  const chineseDate = dateToChinese(data.authTime, data.showDay);
 
   return (
     <div className="h-full overflow-y-auto p-6 bg-slate-800">
@@ -78,7 +78,7 @@ export const CertificateEditor: React.FC<CertificateEditorProps> = ({
           </label>
           <input
             type="text"
-            value={data.guidanceUnit}
+            value={data.guidanceUnit || ''}
             onChange={(e) => handleChange('guidanceUnit', e.target.value)}
             placeholder="请输入指导单位"
             className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -97,7 +97,7 @@ export const CertificateEditor: React.FC<CertificateEditorProps> = ({
               type="text"
               value={data.certNumber}
               onChange={(e) => handleChange('certNumber', e.target.value)}
-              placeholder="例如：CERT-20240930-1234"
+              placeholder="例如：202410022968"
               className="flex-1 px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <button
@@ -127,8 +127,21 @@ export const CertificateEditor: React.FC<CertificateEditorProps> = ({
           />
           {chineseDate && (
             <div className="mt-2 px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg">
-              <span className="text-sm text-gray-400">中文格式：</span>
-              <span className="text-sm text-blue-400 ml-2 font-medium">{chineseDate}</span>
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <span className="text-sm text-gray-400">中文格式：</span>
+                  <span className="text-sm text-blue-400 ml-2 font-medium">{chineseDate}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <label className="text-sm text-gray-400">显示日：</label>
+                  <input
+                    type="checkbox"
+                    checked={data.showDay || false}
+                    onChange={(e) => handleChange('showDay', e.target.checked)}
+                    className="w-4 h-4 rounded bg-slate-700 border-slate-600 text-blue-500 focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                  />
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -142,7 +155,7 @@ export const CertificateEditor: React.FC<CertificateEditorProps> = ({
           </label>
           <input
             type="text"
-            value={data.authUnit}
+            value={data.authUnit || ''}
             onChange={(e) => handleChange('authUnit', e.target.value)}
             placeholder="请输入授权单位"
             className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"

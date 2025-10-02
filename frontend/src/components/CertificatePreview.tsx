@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { CertificateData, Template } from '../types';
-import { downloadCanvas } from '../utils/imageUtils';
+import { downloadCanvas, cleanName } from '../utils/imageUtils';
 import { loadTemplateImage } from '../utils/templateScanner';
 import { dateToChinese } from '../utils/dateUtils';
 import { Download, Loader2, Save, Eye } from 'lucide-react';
@@ -60,31 +60,31 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
       if (defaultContent) {
         console.log('🔄 检测到预设内容，开始自动填充...');
         
-        // 创建更新后的数据，只填充空白字段
+        // 创建更新后的数据，切换模板时始终使用预设内容覆盖
         const updatedData = { ...data, [field]: value };
         
-        // 只有当前字段为空时才填充预设内容
-        if (!data.name && defaultContent.name) {
+        // 填充所有有预设值的字段
+        if (defaultContent.name) {
           updatedData.name = defaultContent.name;
           console.log(`  ✅ 填充姓名: ${defaultContent.name}`);
         }
-        if (!data.content && defaultContent.content) {
+        if (defaultContent.content) {
           updatedData.content = defaultContent.content;
           console.log(`  ✅ 填充证书内容: ${defaultContent.content.substring(0, 30)}...`);
         }
-        if (!data.guidanceUnit && defaultContent.guidanceUnit) {
+        if (defaultContent.guidanceUnit) {
           updatedData.guidanceUnit = defaultContent.guidanceUnit;
           console.log(`  ✅ 填充指导单位: ${defaultContent.guidanceUnit}`);
         }
-        if (!data.certNumber && defaultContent.certNumber) {
+        if (defaultContent.certNumber) {
           updatedData.certNumber = defaultContent.certNumber;
           console.log(`  ✅ 填充证书编号: ${defaultContent.certNumber}`);
         }
-        if (!data.authTime && defaultContent.authTime) {
+        if (defaultContent.authTime) {
           updatedData.authTime = defaultContent.authTime;
           console.log(`  ✅ 填充授权时间: ${defaultContent.authTime}`);
         }
-        if (!data.authUnit && defaultContent.authUnit) {
+        if (defaultContent.authUnit) {
           updatedData.authUnit = defaultContent.authUnit;
           console.log(`  ✅ 填充授权单位: ${defaultContent.authUnit}`);
         }
@@ -213,6 +213,8 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
             fontSize: config.fontSize,
             align: config.align,
             fontWeight: config.fontWeight,
+            lineHeight: config.lineHeight,
+            wrapLabel: config.wrapLabel,
           });
           
           // 构建字体字符串，包含粗细
@@ -221,7 +223,35 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
           ctx.fillStyle = config.color;
           ctx.textAlign = config.align;
           
-          const lineHeight = config.fontSize * 1.5;
+          // 使用自定义行间距或默认值
+          const lineHeight = config.lineHeight || (config.fontSize * 1.5);
+          
+          // 处理标签换行显示
+          if (config.wrapLabel) {
+            // 查找冒号，将标签和内容分开
+            const chineseColonIndex = text.indexOf('：');
+            const englishColonIndex = text.indexOf(':');
+            let colonIndex = -1;
+            
+            if (chineseColonIndex >= 0 && englishColonIndex >= 0) {
+              colonIndex = Math.min(chineseColonIndex, englishColonIndex);
+            } else if (chineseColonIndex >= 0) {
+              colonIndex = chineseColonIndex;
+            } else if (englishColonIndex >= 0) {
+              colonIndex = englishColonIndex;
+            }
+            
+            if (colonIndex >= 0) {
+              const label = text.substring(0, colonIndex + 1); // 包括冒号
+              const content = text.substring(colonIndex + 1);
+              
+              // 第一行绘制标签
+              ctx.fillText(label, config.x, config.y);
+              // 第二行绘制内容
+              ctx.fillText(content, config.x, config.y + lineHeight);
+              return;
+            }
+          }
           
           // 如果设置了最大宽度，进行自动换行
           if (config.maxWidth) {
@@ -271,8 +301,8 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
         drawTextField(data.content, templateConfig.content, '证书内容');
         drawTextField(data.guidanceUnit ? `指导单位：${data.guidanceUnit}` : '', templateConfig.guidanceUnit, '指导单位');
         drawTextField(data.certNumber ? `证书编号：${data.certNumber}` : '', templateConfig.certNumber, '证书编号');
-        drawTextField(data.authTime ? `授权时间：${dateToChinese(data.authTime)}` : '', templateConfig.authTime, '授权时间');
-        drawTextField(data.authUnit, templateConfig.authUnit, '授权单位');
+        drawTextField(data.authTime ? `授权时间：${dateToChinese(data.authTime, data.showDay)}` : '', templateConfig.authTime, '授权时间');
+        drawTextField(data.authUnit ? `授权单位：${data.authUnit}` : '', templateConfig.authUnit, '授权单位');
         
         console.log('✅ 使用配置参数绘制完成');
       } else {
@@ -313,7 +343,7 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
 
         // Draw auth time (授权时间)
         if (data.authTime) {
-          const chineseDate = dateToChinese(data.authTime);
+          const chineseDate = dateToChinese(data.authTime, data.showDay);
           ctx.font = '18px SimSun, serif';
           ctx.textAlign = 'right';
           ctx.fillText(`授权时间：${chineseDate}`, canvas.width * 0.9, canvas.height * 0.85);
@@ -323,7 +353,7 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
         if (data.authUnit) {
           ctx.font = '20px SimSun, serif';
           ctx.textAlign = 'center';
-          ctx.fillText(data.authUnit, canvas.width * 0.75, canvas.height * 0.75);
+          ctx.fillText(`授权单位：${data.authUnit}`, canvas.width * 0.75, canvas.height * 0.75);
         }
       }
 
@@ -428,7 +458,8 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
 
   const handleDownload = () => {
     if (canvasRef.current) {
-      const filename = `${data.title || '证书'}_${data.name || 'unnamed'}.png`;
+      const cleanedName = cleanName(data.name);
+      const filename = `证书_${cleanedName}.png`;
       downloadCanvas(canvasRef.current, filename);
     }
   };

@@ -8,7 +8,8 @@ const TEMPLATE_PATHS = {
     { name: '研究性课题证书', path: '/templates/certificate-tpls/研究性课题证书.png' },
   ],
   stamp: [
-    { name: '印章1', path: '/templates/stamp-tpls/1.jpg' },
+    { name: '南通市星云科技研究中心', path: '/templates/stamp-tpls/南通市星云科技研究中心.png' },
+    { name: '南通市青少年发展指导中心', path: '/templates/stamp-tpls/南通市青少年发展指导中心.png' },
   ],
   watermark: [
     // 水印模板可以在这里添加

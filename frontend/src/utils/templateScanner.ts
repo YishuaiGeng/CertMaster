@@ -18,8 +18,8 @@ export const scanTemplateFiles = (): TemplateFile[] => {
   
   // 盖章模板
   const stampFiles = [
-    '1.jpg',
-    '2.png',
+    '南通市星云科技研究中心.png',
+    '南通市青少年发展指导中心.png',
   ];
   
   // 水印模板

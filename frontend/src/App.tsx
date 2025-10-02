@@ -23,6 +23,7 @@ function App() {
     stampTemplateId: '',
     watermarkTemplateId: '',
     createdAt: new Date().toISOString(),
+    showDay: false,
   });
 
   const [certificates, setCertificates] = useState<CertificateData[]>([]);
@@ -41,7 +42,9 @@ function App() {
       
       // 检查后端服务是否可用
       const health = await checkHealth();
-      if (health) {
+      const isBackendAvailable = !!health;
+      
+      if (isBackendAvailable) {
         console.log('✅ 后端服务已连接');
         setBackendAvailable(true);
       } else {
@@ -76,15 +79,17 @@ function App() {
         console.log('✅ 系统已初始化，跳过迁移');
       }
       
-      loadData();
+      // 使用局部变量而不是 state，避免异步问题
+      await loadDataWithBackend(isBackendAvailable);
       setIsLoading(false);
     };
     initApp();
   }, []);
 
-  const loadData = async () => {
+  // 使用参数而不是依赖 state，避免异步问题
+  const loadDataWithBackend = async (useBackend: boolean) => {
     // 加载证书：优先从后端，失败则从 LocalStorage
-    if (backendAvailable) {
+    if (useBackend) {
       try {
         const certificatesFromBackend = await fetchCertificates();
         console.log(`✅ 从后端加载了 ${certificatesFromBackend.length} 个证书`);
@@ -94,7 +99,9 @@ function App() {
         setCertificates(storage.getCertificates());
       }
     } else {
-      setCertificates(storage.getCertificates());
+      const localCerts = storage.getCertificates();
+      console.log(`📦 从 LocalStorage 加载了 ${localCerts.length} 个证书`);
+      setCertificates(localCerts);
     }
     
     // 重新扫描内置模板并合并用户模板
@@ -103,7 +110,7 @@ function App() {
     
     // 加载模板配置：优先从后端，失败则从 LocalStorage
     let allConfigs: any = {};
-    if (backendAvailable) {
+    if (useBackend) {
       try {
         allConfigs = await fetchConfigs();
         console.log(`✅ 从后端加载了 ${Object.keys(allConfigs).length} 个模板配置`);
@@ -136,6 +143,11 @@ function App() {
       ...userTemplates
     ];
     setTemplates(allTemplates);
+  };
+
+  // 包装函数，使用当前的 backendAvailable state
+  const loadData = async () => {
+    await loadDataWithBackend(backendAvailable);
   };
 
   const handleSave = async () => {
@@ -207,6 +219,7 @@ function App() {
       stampTemplateId: '',
       watermarkTemplateId: '',
       createdAt: new Date().toISOString(),
+      showDay: false,
     });
   };
 

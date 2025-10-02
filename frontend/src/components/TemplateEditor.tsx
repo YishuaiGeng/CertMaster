@@ -212,7 +212,7 @@ export const TemplateEditor: React.FC<TemplateEditorProps> = ({ template, onClos
             
             // 处理多行文本
             const lines = defaultValue.split('\n');
-            const lineHeight = textConf.fontSize * 1.2;
+            const lineHeight = textConf.lineHeight || (textConf.fontSize * 1.5);
             
             lines.forEach((line, index) => {
               let displayText = line;
@@ -575,6 +575,41 @@ export const TemplateEditor: React.FC<TemplateEditorProps> = ({ template, onClos
                       <option value="right">右对齐</option>
                     </select>
                   </div>
+
+                  {/* 行间距配置 */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      行间距 (px)
+                    </label>
+                    <input
+                      type="number"
+                      value={(activeConfig as FieldConfig).lineHeight || ''}
+                      onChange={(e) => handleFieldChange(activeField, 'lineHeight', e.target.value ? Number(e.target.value) : undefined)}
+                      placeholder={`默认：${Math.round((activeConfig as FieldConfig).fontSize * 1.5)}`}
+                      className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      💡 多行文本的行间距（仅对证书内容等多行字段有效）
+                    </p>
+                  </div>
+
+                  {/* 换行显示配置 - 仅对特定字段显示 */}
+                  {(activeField === 'authUnit' || activeField === 'authTime' || activeField === 'guidanceUnit' || activeField === 'certNumber') && (
+                    <div>
+                      <label className="flex items-center gap-2 text-sm text-gray-300 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={(activeConfig as FieldConfig).wrapLabel || false}
+                          onChange={(e) => handleFieldChange(activeField, 'wrapLabel', e.target.checked)}
+                          className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-blue-600 focus:ring-2 focus:ring-blue-500"
+                        />
+                        <span>标签与内容换行显示</span>
+                      </label>
+                      <p className="text-xs text-gray-500 mt-1 ml-6">
+                        💡 勾选后，"授权单位："和单位名称会分两行显示
+                      </p>
+                    </div>
+                  )}
 
                   <div className="pt-4 border-t border-slate-600">
                     <h4 className="text-sm font-medium text-gray-300 mb-3">文本框范围限制（可选）</h4>

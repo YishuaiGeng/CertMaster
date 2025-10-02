@@ -11,6 +11,7 @@ export interface CertificateData {
   stampTemplateId: string;
   watermarkTemplateId: string;
   createdAt: string;
+  showDay?: boolean; // 是否显示日期中的"日"
 }
 
 export interface Template {
@@ -41,6 +42,8 @@ export interface FieldConfig {
   align: 'left' | 'center' | 'right'; // 对齐方式
   maxWidth?: number; // 最大宽度（可选，用于文本换行）
   maxHeight?: number; // 最大高度（可选，用于限制文本区域）
+  lineHeight?: number; // 行间距（可选，默认为fontSize * 1.5）
+  wrapLabel?: boolean; // 是否将标签和内容换行显示（可选，用于"授权单位：xxx"等）
 }
 
 // 盖章配置

@@ -1,28 +1,28 @@
 {
   "name": {
-    "x": 263,
-    "y": 625,
-    "fontSize": 44,
+    "x": 241,
+    "y": 724,
+    "fontSize": 48,
     "fontFamily": "SimSun, serif",
     "fontWeight": "normal",
     "color": "#000000",
     "align": "left"
   },
   "content": {
-    "x": 262,
-    "y": 770,
+    "x": 254,
+    "y": 874,
     "fontSize": 44,
     "fontFamily": "SimSun, serif",
     "fontWeight": "normal",
     "color": "#000000",
     "align": "left",
     "lineHeight": 80,
-    "maxWidth": 1550,
-    "maxHeight": 250
+    "maxWidth": 950,
+    "maxHeight": 400
   },
   "guidanceUnit": {
-    "x": 263,
-    "y": 991,
+    "x": 246,
+    "y": 1314,
     "fontSize": 44,
     "fontFamily": "SimSun, serif",
     "fontWeight": "normal",
@@ -30,43 +30,48 @@
     "align": "left"
   },
   "certNumber": {
-    "x": 268,
-    "y": 1081,
-    "fontSize": 44,
+    "x": 251,
+    "y": 1456,
+    "fontSize": 40,
     "fontFamily": "SimSun, serif",
     "fontWeight": "normal",
     "color": "#000000",
     "align": "left"
   },
   "authTime": {
-    "x": 1115,
-    "y": 991,
-    "fontSize": 44,
+    "x": 249,
+    "y": 1641,
+    "fontSize": 40,
     "fontFamily": "SimSun, serif",
     "fontWeight": "normal",
     "color": "#000000",
-    "align": "left"
+    "align": "left",
+    "maxWidth": 450,
+    "maxHeight": 250,
+    "wrapLabel": true
   },
   "authUnit": {
-    "x": 1120,
-    "y": 1084,
-    "fontSize": 44,
+    "x": 799,
+    "y": 1641,
+    "fontSize": 40,
     "fontFamily": "SimSun, serif",
     "fontWeight": "normal",
     "color": "#000000",
-    "align": "left"
+    "align": "left",
+    "wrapLabel": true,
+    "maxWidth": 450,
+    "maxHeight": 250
   },
   "stamp": {
-    "x": 1477,
-    "y": 1032,
+    "x": 1012,
+    "y": 1642,
     "width": 250,
     "height": 250,
-    "rotation": 5.4081038526071055
+    "rotation": -7.0460304656702055
   },
   "defaultContent": {
-    "name": "XXX同学：",
-    "authUnit": "南通星云科技研发中心",
-    "guidanceUnit": "南通市如皋市白蒲中学",
-    "content": "你在中学生科普活动中，参加了通用技术课程的学习，并完成了通用技术的作品《智能盆栽养护系统》课题。经考核合格，特发此证。"
+    "name": "555555555",
+    "authUnit": "南通市青少年发展指导中心",
+    "content": "    你在本机构环境科技拓展活动"
   }
 }
