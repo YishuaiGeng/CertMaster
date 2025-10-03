@@ -217,45 +217,110 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
             wrapLabel: config.wrapLabel,
           });
           
-          // 构建字体字符串，包含粗细
+          // 检查是否包含标签前缀（如"证书编号："）
+          const chineseColonIndex = text.indexOf('：');
+          const englishColonIndex = text.indexOf(':');
+          let colonIndex = -1;
+          
+          if (chineseColonIndex >= 0 && englishColonIndex >= 0) {
+            colonIndex = Math.min(chineseColonIndex, englishColonIndex);
+          } else if (chineseColonIndex >= 0) {
+            colonIndex = chineseColonIndex;
+          } else if (englishColonIndex >= 0) {
+            colonIndex = englishColonIndex;
+          }
+          
+          // 判断是否有前缀标签
+          const hasLabel = colonIndex >= 0 && colonIndex < text.length - 1;
+          let label = '';
+          let content = text;
+          
+          if (hasLabel) {
+            label = text.substring(0, colonIndex + 1); // 包括冒号
+            content = text.substring(colonIndex + 1); // 冒号后的内容
+          }
+          
+          // 构建字体字符串，包含粗细和样式
           const fontWeight = config.fontWeight || 'normal';
-          ctx.font = `${fontWeight} ${config.fontSize}px ${config.fontFamily}`;
+          const fontStyle = config.fontStyle || 'normal';
+          const textDecoration = config.textDecoration || 'none';
+          
           ctx.fillStyle = config.color;
           ctx.textAlign = config.align;
           
           // 使用自定义行间距或默认值
           const lineHeight = config.lineHeight || (config.fontSize * 1.5);
           
+          // 辅助函数：绘制文本和下划线
+          const drawTextWithUnderline = (text: string, x: number, y: number, useDecoration: boolean) => {
+            const currentAlign = ctx.textAlign; // 使用当前的对齐方式
+            ctx.fillText(text, x, y);
+            // 如果需要下划线
+            if (useDecoration && textDecoration === 'underline') {
+              const metrics = ctx.measureText(text);
+              const underlineY = y + config.fontSize * 0.1;
+              ctx.beginPath();
+              // 根据当前的 textAlign 计算下划线位置
+              const offsetLeft = currentAlign === 'center' ? metrics.width / 2 : currentAlign === 'right' ? metrics.width : 0;
+              const offsetRight = currentAlign === 'center' ? metrics.width / 2 : currentAlign === 'right' ? 0 : metrics.width;
+              ctx.moveTo(x - offsetLeft, underlineY);
+              ctx.lineTo(x + offsetRight, underlineY);
+              ctx.strokeStyle = config.color;
+              ctx.lineWidth = Math.max(1, config.fontSize * 0.05);
+              ctx.stroke();
+            }
+          };
+          
           // 处理标签换行显示
-          if (config.wrapLabel) {
-            // 查找冒号，将标签和内容分开
-            const chineseColonIndex = text.indexOf('：');
-            const englishColonIndex = text.indexOf(':');
-            let colonIndex = -1;
+          if (config.wrapLabel && hasLabel) {
+            // 第一行绘制标签（正常样式，无装饰）
+            ctx.font = `normal normal ${config.fontSize}px ${config.fontFamily}`;
+            ctx.fillText(label, config.x, config.y);
             
-            if (chineseColonIndex >= 0 && englishColonIndex >= 0) {
-              colonIndex = Math.min(chineseColonIndex, englishColonIndex);
-            } else if (chineseColonIndex >= 0) {
-              colonIndex = chineseColonIndex;
-            } else if (englishColonIndex >= 0) {
-              colonIndex = englishColonIndex;
-            }
-            
-            if (colonIndex >= 0) {
-              const label = text.substring(0, colonIndex + 1); // 包括冒号
-              const content = text.substring(colonIndex + 1);
-              
-              // 第一行绘制标签
-              ctx.fillText(label, config.x, config.y);
-              // 第二行绘制内容
-              ctx.fillText(content, config.x, config.y + lineHeight);
-              return;
-            }
+            // 第二行绘制内容（应用样式）
+            ctx.font = `${fontStyle} ${fontWeight} ${config.fontSize}px ${config.fontFamily}`;
+            drawTextWithUnderline(content, config.x, config.y + lineHeight, true);
+            return;
           }
+          
+          // 如果有标签但不换行，需要分段绘制
+          if (hasLabel && !config.wrapLabel) {
+            // 计算标签和内容的宽度
+            ctx.font = `normal normal ${config.fontSize}px ${config.fontFamily}`;
+            const labelMetrics = ctx.measureText(label);
+            ctx.font = `${fontStyle} ${fontWeight} ${config.fontSize}px ${config.fontFamily}`;
+            const contentMetrics = ctx.measureText(content);
+            const totalWidth = labelMetrics.width + contentMetrics.width;
+            
+            // 根据对齐方式计算起始位置
+            let startX = config.x;
+            if (config.align === 'center') {
+              startX = config.x - totalWidth / 2;
+            } else if (config.align === 'right') {
+              startX = config.x - totalWidth;
+            }
+            
+            // 绘制标签（正常样式）
+            ctx.textAlign = 'left'; // 临时改为左对齐以精确控制位置
+            ctx.font = `normal normal ${config.fontSize}px ${config.fontFamily}`;
+            ctx.fillText(label, startX, config.y);
+            
+            // 绘制内容（应用样式）
+            ctx.font = `${fontStyle} ${fontWeight} ${config.fontSize}px ${config.fontFamily}`;
+            const contentX = startX + labelMetrics.width;
+            drawTextWithUnderline(content, contentX, config.y, true);
+            
+            // 恢复原始对齐方式
+            ctx.textAlign = config.align;
+            return;
+          }
+          
+          // 应用样式到字体
+          ctx.font = `${fontStyle} ${fontWeight} ${config.fontSize}px ${config.fontFamily}`;
           
           // 如果设置了最大宽度，进行自动换行
           if (config.maxWidth) {
-            const words = text.split('');
+            const words = content.split('');
             let line = '';
             let y = config.y;
             const lines: string[] = [];
@@ -277,22 +342,24 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
             // 检查是否超出最大高度限制
             const totalHeight = lines.length * lineHeight;
             if (config.maxHeight && totalHeight > config.maxHeight) {
-              console.warn(`文本 "${text}" 超出设置的最大高度 ${config.maxHeight}px`);
+              console.warn(`文本 "${content}" 超出设置的最大高度 ${config.maxHeight}px`);
             }
             
             // 绘制所有行
             lines.forEach((line, index) => {
-              ctx.fillText(line, config.x, y + index * lineHeight);
+              const yPos = y + index * lineHeight;
+              drawTextWithUnderline(line, config.x, yPos, true);
             });
-          } else if (text.includes('\n')) {
+          } else if (content.includes('\n')) {
             // 处理手动换行
-            const lines = text.split('\n');
+            const lines = content.split('\n');
             lines.forEach((line, index) => {
-              ctx.fillText(line, config.x, config.y + index * lineHeight);
+              const yPos = config.y + index * lineHeight;
+              drawTextWithUnderline(line, config.x, yPos, true);
             });
           } else {
             // 单行文本
-            ctx.fillText(text, config.x, config.y);
+            drawTextWithUnderline(content, config.x, config.y, true);
           }
         };
 

@@ -1,0 +1,49 @@
+# Git
+.git
+.gitignore
+
+# 文档
+*.md
+*.txt
+
+# 依赖
+**/node_modules
+**/dist
+**/build
+
+# Python
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.pyd
+.Python
+**/.pytest_cache
+**/.coverage
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 日志
+*.log
+
+# 环境变量
+.env
+.env.local
+
+# 数据文件（可选，根据需求调整）
+# data/
+
+# 脚本
+scripts/
+
+# 其他
+*.bat
+

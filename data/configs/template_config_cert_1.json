@@ -2,9 +2,9 @@
   "name": {
     "x": 241,
     "y": 724,
-    "fontSize": 48,
+    "fontSize": 44,
     "fontFamily": "SimSun, serif",
-    "fontWeight": "normal",
+    "fontWeight": "bold",
     "color": "#000000",
     "align": "left"
   },
@@ -13,19 +13,19 @@
     "y": 870,
     "fontSize": 44,
     "fontFamily": "SimSun, serif",
-    "fontWeight": "normal",
+    "fontWeight": "bold",
     "color": "#000000",
     "align": "left",
-    "lineHeight": 80,
+    "lineHeight": 90,
     "maxWidth": 950,
     "maxHeight": 400
   },
   "guidanceUnit": {
     "x": 244,
     "y": 1313,
-    "fontSize": 44,
+    "fontSize": 40,
     "fontFamily": "SimSun, serif",
-    "fontWeight": "normal",
+    "fontWeight": "bold",
     "color": "#000000",
     "align": "left"
   },
@@ -34,16 +34,17 @@
     "y": 1460,
     "fontSize": 40,
     "fontFamily": "SimSun, serif",
-    "fontWeight": "normal",
+    "fontWeight": "bold",
     "color": "#000000",
-    "align": "left"
+    "align": "left",
+    "fontStyle": "italic"
   },
   "authTime": {
     "x": 244,
     "y": 1645,
     "fontSize": 40,
     "fontFamily": "SimSun, serif",
-    "fontWeight": "normal",
+    "fontWeight": "bold",
     "color": "#000000",
     "align": "left",
     "maxWidth": 450,
@@ -51,11 +52,11 @@
     "wrapLabel": true
   },
   "authUnit": {
-    "x": 773,
+    "x": 749,
     "y": 1641,
     "fontSize": 40,
     "fontFamily": "SimSun, serif",
-    "fontWeight": "normal",
+    "fontWeight": "bold",
     "color": "#000000",
     "align": "left",
     "wrapLabel": true,

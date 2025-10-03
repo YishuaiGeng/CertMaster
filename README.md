@@ -124,7 +124,72 @@ CertMaster 是一个基于 Web 的证书制作系统，支持：
 
 ## 📦 部署指南
 
-### 方法一：完整部署（推荐）
+### 方法一：Docker 部署（最简单，推荐）
+
+#### 1. 从 Docker Hub 拉取镜像
+
+```bash
+# 拉取最新版本
+docker pull ysgeng/certmaster:latest
+
+# 启动容器
+docker run -d -p 8000:8000 --name certmaster --restart unless-stopped ysgeng/certmaster:latest
+```
+
+#### 2. 访问系统
+
+- 🌐 应用页面: http://localhost:8000
+- 📚 API 文档: http://localhost:8000/api/docs
+
+#### 3. 数据持久化（可选）
+
+如果需要在容器外部管理数据文件：
+
+```bash
+docker run -d -p 8000:8000 \
+  --name certmaster \
+  --restart unless-stopped \
+  -v D:/CertMaster/data:/app/backend/data \
+  ysgeng/certmaster:latest
+```
+
+#### 4. 推送自己的镜像到 Docker Hub
+
+如果您修改了代码并想推送到自己的 Docker Hub：
+
+```bash
+# 1. 登录 Docker Hub
+docker login
+
+# 2. 构建镜像
+docker build -t certmaster:latest .
+
+# 3. 打标签
+docker tag certmaster:latest ysgeng/certmaster:latest
+
+# 4. 推送到 Docker Hub
+docker push ysgeng/certmaster:latest
+```
+
+#### 5. 管理容器
+
+```bash
+# 查看容器日志
+docker logs certmaster
+
+# 停止容器
+docker stop certmaster
+
+# 重启容器
+docker restart certmaster
+
+# 删除容器
+docker rm -f certmaster
+```
+
+---
+
+### 方法二：完整部署（本地开发）
 
 #### 1. 准备环境
 

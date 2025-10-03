@@ -97,7 +97,7 @@ export const initializeDefaultTemplates = async (): Promise<void> => {
     }
 
     // 加载水印模板（如果有）
-    for (const tmpl of TEMPLATE_PATHS.watermark) {
+    for (const tmpl of TEMPLATE_PATHS.watermark as Array<{path: string, name: string}>) {
       try {
         const imageUrl = await urlToDataUrl(tmpl.path);
         const template: Template = {

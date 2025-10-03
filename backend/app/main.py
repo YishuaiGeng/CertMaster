@@ -26,11 +26,20 @@ app = FastAPI(
 # CORS 配置
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173"],
+    allow_origins=["http://localhost:3000", "http://localhost:5173", "http://localhost:8000", "http://localhost"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# 挂载静态文件目录（前端构建产物）
+STATIC_DIR = Path(__file__).parent.parent / "static"
+if STATIC_DIR.exists():
+    assets_dir = STATIC_DIR / "assets"
+    if assets_dir.exists():
+        app.mount("/assets", StaticFiles(directory=str(assets_dir)), name="assets")
+        print(f"✅ 静态资源目录已挂载: {assets_dir}")
+    print(f"✅ 静态文件目录存在: {STATIC_DIR}")
 
 # 数据目录配置
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -72,9 +81,12 @@ async def startup_event():
     print(f"📚 API 文档: http://localhost:8000/api/docs")
     print("="*60 + "\n")
 
-# 挂载静态文件
-app.mount("/data/certificates", StaticFiles(directory=str(CERTIFICATES_DIR)), name="certificates")
-app.mount("/data/configs", StaticFiles(directory=str(CONFIGS_DIR)), name="configs")
+# 挂载静态文件（仅当目录存在且不为空时）
+# 注意：StaticFiles 要求目录必须存在，所以我们只在有内容时才挂载
+# if CERTIFICATES_DIR.exists() and any(CERTIFICATES_DIR.iterdir()):
+#     app.mount("/data/certificates", StaticFiles(directory=str(CERTIFICATES_DIR)), name="certificates")
+# if CONFIGS_DIR.exists() and any(CONFIGS_DIR.iterdir()):
+#     app.mount("/data/configs", StaticFiles(directory=str(CONFIGS_DIR)), name="configs")
 
 # ==================== 数据模型 ====================
 
@@ -395,13 +407,36 @@ async def get_stats():
 
 @app.get("/")
 async def root():
-    """根路径"""
+    """根路径 - 返回前端页面"""
+    index_path = STATIC_DIR / "index.html"
+    if index_path.exists():
+        return FileResponse(index_path)
     return {
         "name": "CertMaster API",
         "version": "2.0.0",
         "docs": "/api/docs",
         "health": "/api/health"
     }
+
+# ==================== SPA 路由支持（必须放在最后） ====================
+
+# 前端 SPA 路由 - 捕获所有未匹配的路由，返回 index.html
+# 注意：这个路由必须定义在所有其他路由之后
+@app.get("/{full_path:path}")
+async def serve_spa(full_path: str):
+    """SPA 路由支持 - 捕获所有未匹配的请求"""
+    # 尝试返回请求的静态文件
+    file_path = STATIC_DIR / full_path
+    if file_path.is_file():
+        return FileResponse(file_path)
+    
+    # 返回 index.html 用于前端路由
+    index_path = STATIC_DIR / "index.html"
+    if index_path.exists():
+        return FileResponse(index_path)
+    
+    # 如果静态文件不存在，返回 404
+    raise HTTPException(status_code=404, detail=f"File not found: {full_path}")
 
 if __name__ == "__main__":
     import uvicorn

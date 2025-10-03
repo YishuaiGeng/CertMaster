@@ -100,5 +100,22 @@
     "filename": "证书_xxx_2025-10-03_1759457999447.png",
     "filepath": "/data/certificates/证书_xxx_2025-10-03_1759457999447.png",
     "savedAt": "2025-10-03T10:19:59.451337"
+  },
+  {
+    "id": "cert_1759472892526",
+    "title": "亲爱的xxx： - 研究性学习成果课题",
+    "name": "亲爱的xxx：",
+    "content": "    你在本机构环境科技拓展活动中完成了研究性学习课题“基于计算机视觉的校园安全隐患智能识别模型研究”的学习研究任务，成绩合格准予结业，特发此证。",
+    "guidanceUnit": "",
+    "certNumber": "202508235478",
+    "authTime": "2025-10-03",
+    "authUnit": "南通市青少年发展指导中心",
+    "certificateTemplateId": "cert_1",
+    "stampTemplateId": "stamp_1",
+    "watermarkTemplateId": "",
+    "createdAt": "2025-10-03T06:28:12.526Z",
+    "filename": "证书_xxx_2025-10-03_1759473051915.png",
+    "filepath": "/data/certificates/证书_xxx_2025-10-03_1759473051915.png",
+    "savedAt": "2025-10-03T14:30:51.918655"
   }
 ]

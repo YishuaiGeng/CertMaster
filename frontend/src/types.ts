@@ -38,6 +38,8 @@ export interface FieldConfig {
   fontSize: number; // 字体大小
   fontFamily: string; // 字体
   fontWeight: 'normal' | 'bold'; // 字体粗细
+  fontStyle?: 'normal' | 'italic'; // 字体样式（斜体）
+  textDecoration?: 'none' | 'underline'; // 文本装饰（下划线）
   color: string; // 颜色
   align: 'left' | 'center' | 'right'; // 对齐方式
   maxWidth?: number; // 最大宽度（可选，用于文本换行）

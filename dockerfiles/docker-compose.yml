@@ -1,0 +1,44 @@
+# Docker Compose 配置 - CertMaster 证书管理系统
+
+services:
+  # 后端服务
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    image: certmaster-backend:latest
+    container_name: certmaster-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../data:/app/data
+      - ../backend/app:/app/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    networks:
+      - certmaster-network
+
+  # 前端服务
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    image: certmaster-frontend:latest
+    container_name: certmaster-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - certmaster-network
+
+networks:
+  certmaster-network:
+    driver: bridge
+
+volumes:
+  certmaster-data:
+    driver: local
+

@@ -1,0 +1,23 @@
+# Docker Compose 配置 - CertMaster 单体镜像版本
+
+services:
+  certmaster:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: certmaster:latest
+    container_name: certmaster
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/backend/data
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    networks:
+      - certmaster-network
+
+networks:
+  certmaster-network:
+    driver: bridge
+

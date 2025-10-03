@@ -1,0 +1,132 @@
+🐳 Docker 镜像加速器配置指南
+
+═══════════════════════════════════════════════════════════
+
+问题：无法连接到 Docker Hub (docker.io)
+解决：配置国内镜像加速器
+
+═══════════════════════════════════════════════════════════
+
+方法一：Docker Desktop 配置（推荐）
+─────────────────────────────────────────────────────────
+
+1. 打开 Docker Desktop
+
+2. 点击右上角 ⚙️ 设置图标
+
+3. 选择左侧 "Docker Engine"
+
+4. 在 JSON 配置中添加以下内容：
+
+{
+  "registry-mirrors": [
+    "https://docker.m.daocloud.io",
+    "https://dockerproxy.com",
+    "https://docker.nju.edu.cn",
+    "https://docker.mirrors.sjtug.sjtu.edu.cn"
+  ],
+  "builder": {
+    "gc": {
+      "defaultKeepStorage": "20GB",
+      "enabled": true
+    }
+  },
+  "experimental": false
+}
+
+5. 点击 "Apply & Restart"
+
+6. 等待 Docker 重启完成（约 30 秒）
+
+7. 重新运行构建命令
+
+═══════════════════════════════════════════════════════════
+
+方法二：手动编辑配置文件
+─────────────────────────────────────────────────────────
+
+Windows 路径：
+%USERPROFILE%\.docker\daemon.json
+
+如果文件不存在，创建它并添加：
+{
+  "registry-mirrors": [
+    "https://docker.m.daocloud.io",
+    "https://dockerproxy.com"
+  ]
+}
+
+═══════════════════════════════════════════════════════════
+
+方法三：使用代理（如果您有代理）
+─────────────────────────────────────────────────────────
+
+Docker Desktop → Settings → Resources → Proxies
+配置您的代理服务器地址
+
+═══════════════════════════════════════════════════════════
+
+验证配置
+─────────────────────────────────────────────────────────
+
+配置完成后，在命令行运行：
+
+docker info
+
+查看输出中的 "Registry Mirrors" 部分，应该能看到配置的镜像源
+
+═══════════════════════════════════════════════════════════
+
+可用的镜像加速器列表
+─────────────────────────────────────────────────────────
+
+🌐 DaoCloud：https://docker.m.daocloud.io
+🌐 Docker Proxy：https://dockerproxy.com
+🌐 南京大学：https://docker.nju.edu.cn
+🌐 上海交大：https://docker.mirrors.sjtug.sjtu.edu.cn
+🌐 中科大：https://docker.mirrors.ustc.edu.cn
+
+注意：某些镜像源可能会失效，请多配置几个备用
+
+═══════════════════════════════════════════════════════════
+
+配置完成后的构建步骤
+─────────────────────────────────────────────────────────
+
+1. 返回项目目录
+   cd D:\Codes\CertMaster
+
+2. 运行构建脚本
+   dockerfiles\docker-start.bat
+
+   或手动构建：
+   docker-compose -f dockerfiles/docker-compose.yml build
+
+3. 启动服务
+   docker-compose -f dockerfiles/docker-compose.yml up -d
+
+4. 访问应用
+   前端：http://localhost
+   后端：http://localhost:8000
+
+═══════════════════════════════════════════════════════════
+
+常见问题
+─────────────────────────────────────────────────────────
+
+Q: 配置后还是无法连接？
+A: 1. 检查网络连接
+   2. 尝试更换其他镜像源
+   3. 重启 Docker Desktop
+   4. 重启电脑
+
+Q: 如何测试镜像源是否可用？
+A: docker pull hello-world
+
+Q: 是否需要科学上网？
+A: 配置镜像加速器后通常不需要
+
+═══════════════════════════════════════════════════════════
+
+更新时间：2025-10-03
+

@@ -4,7 +4,7 @@
     "y": 625,
     "fontSize": 44,
     "fontFamily": "SimSun, serif",
-    "fontWeight": "normal",
+    "fontWeight": "bold",
     "color": "#000000",
     "align": "left"
   },
@@ -13,7 +13,7 @@
     "y": 770,
     "fontSize": 44,
     "fontFamily": "SimSun, serif",
-    "fontWeight": "normal",
+    "fontWeight": "bold",
     "color": "#000000",
     "align": "left",
     "lineHeight": 80,
@@ -25,7 +25,7 @@
     "y": 991,
     "fontSize": 44,
     "fontFamily": "SimSun, serif",
-    "fontWeight": "normal",
+    "fontWeight": "bold",
     "color": "#000000",
     "align": "left"
   },
@@ -34,7 +34,7 @@
     "y": 1081,
     "fontSize": 44,
     "fontFamily": "SimSun, serif",
-    "fontWeight": "normal",
+    "fontWeight": "bold",
     "color": "#000000",
     "align": "left"
   },
@@ -43,7 +43,7 @@
     "y": 991,
     "fontSize": 44,
     "fontFamily": "SimSun, serif",
-    "fontWeight": "normal",
+    "fontWeight": "bold",
     "color": "#000000",
     "align": "left"
   },
@@ -52,7 +52,7 @@
     "y": 1084,
     "fontSize": 44,
     "fontFamily": "SimSun, serif",
-    "fontWeight": "normal",
+    "fontWeight": "bold",
     "color": "#000000",
     "align": "left"
   },

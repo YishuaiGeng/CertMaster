@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { CertificateData, Template } from './types';
 import { storage } from './utils/storage';
 import { scanTemplateFiles } from './utils/templateScanner';

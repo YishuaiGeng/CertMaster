@@ -515,7 +515,7 @@ export const TemplateEditor: React.FC<TemplateEditorProps> = ({ template, onClos
                       <select
                         value={(activeConfig as FieldConfig).fontFamily}
                         onChange={(e) => handleFieldChange(activeField, 'fontFamily', e.target.value)}
-                        className="flex-1 px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="SimSun, serif">宋体 (SimSun)</option>
                         <option value="SimHei, sans-serif">黑体 (SimHei)</option>
@@ -534,7 +534,17 @@ export const TemplateEditor: React.FC<TemplateEditorProps> = ({ template, onClos
                         <option value="Verdana, sans-serif">Verdana</option>
                         <option value="Courier New, monospace">Courier New</option>
                       </select>
-                      <div className="flex items-center gap-2 px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg whitespace-nowrap">
+                    </div>
+                  </div>
+
+                  {/* 文本样式 */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      文本样式
+                    </label>
+                    <div className="flex gap-2">
+                      {/* 加粗 */}
+                      <div className="flex items-center gap-2 px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg flex-1">
                         <input
                           type="checkbox"
                           id={`bold-${activeField}`}
@@ -542,8 +552,34 @@ export const TemplateEditor: React.FC<TemplateEditorProps> = ({ template, onClos
                           onChange={(e) => handleFieldChange(activeField, 'fontWeight', e.target.checked ? 'bold' : 'normal')}
                           className="w-4 h-4 text-blue-600 bg-slate-600 border-slate-500 rounded focus:ring-blue-500 focus:ring-2"
                         />
-                        <label htmlFor={`bold-${activeField}`} className="text-white cursor-pointer select-none">
-                          <strong>加粗</strong>
+                        <label htmlFor={`bold-${activeField}`} className="text-white cursor-pointer select-none flex-1 text-center">
+                          <strong>粗体</strong>
+                        </label>
+                      </div>
+                      {/* 斜体 */}
+                      <div className="flex items-center gap-2 px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg flex-1">
+                        <input
+                          type="checkbox"
+                          id={`italic-${activeField}`}
+                          checked={(activeConfig as FieldConfig).fontStyle === 'italic'}
+                          onChange={(e) => handleFieldChange(activeField, 'fontStyle', e.target.checked ? 'italic' : 'normal')}
+                          className="w-4 h-4 text-blue-600 bg-slate-600 border-slate-500 rounded focus:ring-blue-500 focus:ring-2"
+                        />
+                        <label htmlFor={`italic-${activeField}`} className="text-white cursor-pointer select-none flex-1 text-center">
+                          <em>斜体</em>
+                        </label>
+                      </div>
+                      {/* 下划线 */}
+                      <div className="flex items-center gap-2 px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg flex-1">
+                        <input
+                          type="checkbox"
+                          id={`underline-${activeField}`}
+                          checked={(activeConfig as FieldConfig).textDecoration === 'underline'}
+                          onChange={(e) => handleFieldChange(activeField, 'textDecoration', e.target.checked ? 'underline' : 'none')}
+                          className="w-4 h-4 text-blue-600 bg-slate-600 border-slate-500 rounded focus:ring-blue-500 focus:ring-2"
+                        />
+                        <label htmlFor={`underline-${activeField}`} className="text-white cursor-pointer select-none flex-1 text-center">
+                          <u>下划线</u>
                         </label>
                       </div>
                     </div>
