@@ -9,8 +9,8 @@
     "align": "left"
   },
   "content": {
-    "x": 254,
-    "y": 874,
+    "x": 241,
+    "y": 870,
     "fontSize": 44,
     "fontFamily": "SimSun, serif",
     "fontWeight": "normal",
@@ -21,8 +21,8 @@
     "maxHeight": 400
   },
   "guidanceUnit": {
-    "x": 246,
-    "y": 1314,
+    "x": 244,
+    "y": 1313,
     "fontSize": 44,
     "fontFamily": "SimSun, serif",
     "fontWeight": "normal",
@@ -30,8 +30,8 @@
     "align": "left"
   },
   "certNumber": {
-    "x": 251,
-    "y": 1456,
+    "x": 244,
+    "y": 1460,
     "fontSize": 40,
     "fontFamily": "SimSun, serif",
     "fontWeight": "normal",
@@ -39,8 +39,8 @@
     "align": "left"
   },
   "authTime": {
-    "x": 249,
-    "y": 1641,
+    "x": 244,
+    "y": 1645,
     "fontSize": 40,
     "fontFamily": "SimSun, serif",
     "fontWeight": "normal",
@@ -51,7 +51,7 @@
     "wrapLabel": true
   },
   "authUnit": {
-    "x": 799,
+    "x": 773,
     "y": 1641,
     "fontSize": 40,
     "fontFamily": "SimSun, serif",
@@ -70,8 +70,8 @@
     "rotation": -7.0460304656702055
   },
   "defaultContent": {
-    "name": "555555555",
+    "name": "亲爱的xxx：",
     "authUnit": "南通市青少年发展指导中心",
-    "content": "    你在本机构环境科技拓展活动"
+    "content": "    你在本机构环境科技拓展活动中完成了研究性学习课题“”的学习研究任务，成绩合格准予结业，特发此证。"
   }
 }

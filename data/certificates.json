@@ -83,5 +83,22 @@
     "filename": "证书_555555555_2025-10-03_1759426688006.png",
     "filepath": "/data/certificates/证书_555555555_2025-10-03_1759426688006.png",
     "savedAt": "2025-10-03T01:38:08.010203"
+  },
+  {
+    "id": "cert_1759457925720",
+    "title": "亲爱的xxx： - 研究性学习成果课题",
+    "name": "亲爱的xxx：",
+    "content": "    你在本机构环境科技拓展活动",
+    "guidanceUnit": "南通市如皋市白蒲中学",
+    "certNumber": "",
+    "authTime": "2025-10-03",
+    "authUnit": "南通市青少年发展指导中心",
+    "certificateTemplateId": "cert_1",
+    "stampTemplateId": "stamp_1",
+    "watermarkTemplateId": "",
+    "createdAt": "2025-10-03T02:18:45.720Z",
+    "filename": "证书_xxx_2025-10-03_1759457999447.png",
+    "filepath": "/data/certificates/证书_xxx_2025-10-03_1759457999447.png",
+    "savedAt": "2025-10-03T10:19:59.451337"
   }
 ]
