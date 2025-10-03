@@ -36,7 +36,7 @@ echo ========================================
 echo.
 
 echo 🚀 启动后端服务 (端口 8000)...
-start "CertMaster-Backend" cmd /k "cd backend && pip install -r requirements.txt && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000"
+start "CertMaster-Backend" cmd /k "cd backend && pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000"
 
 timeout /t 3 /nobreak >nul
 
